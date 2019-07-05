@@ -1,0 +1,19 @@
+input[type=text] {
+    width: 100%;
+    background-color: $color-bg-hover;
+    border: none;
+    font-size: $fs-h4;
+    font-weight: $fw-normal;
+    padding: $gap*0.75 $gap*1.5;
+    color: $color-text-1;
+    transition: all ease 400ms;
+    box-shadow: 0 0 0 $gap/10 darken($color-1, 7);
+
+    &:focus {
+        outline: none;
+        background-color: lighten($color-bg-hover, 10);
+        box-shadow: 0 $gap*0.75 0 (-$gap/2) $color-1;
+        transform: translateY(-$gap);
+    }
+}
+

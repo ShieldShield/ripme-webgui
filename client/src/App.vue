@@ -1,23 +1,19 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+	<div id="app" class="container py-5">
+		<h1 class="fs-h1 text-center">
+			Ripme Web Gui
+		</h1>
+
+		<div class="nav text-center mt-3">
+			<router-link to="/">Todos</router-link>
+			<router-link to="/settings">Settings</router-link>
+			<router-link to="/about">About</router-link>
+		</div>
+
+		<div class="main-content mt-5">
+			<router-view />
+		</div>
+		
+	</div>
 </template>
 
-<script>
-export default {
-  name: 'App'
-}
-</script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

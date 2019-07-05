@@ -7,8 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node ./node_modules/nodemon/bin/nodemon.js scr/app.js --exec \"npm run lint && node\"",
-    "lint": "./node_modules/.bin/eslint **/*.js"
+    "start": "node ./node_modules/nodemon/bin/nodemon.js scr/app.js --exec \"npm run node\""
   },
   "keywords": [],
   "author": "",
@@ -22,7 +21,6 @@
   "devDependencies": {
     "babel-eslint": "^10.0.2",
     "eslint-plugin-vue": "^5.2.3",
-    "eslint": "^6.0.1",
     "nodemon": "^1.19.1"
   }
 }
