@@ -1,0 +1,22 @@
+{
+  "name": "ripme-webgui",
+  "version": "0.1.0",
+  "description": "vue/express gui for ripme",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShieldShield/ripme-webgui.git"
+  },
+  "author": "ShieldShield",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShieldShield/ripme-webgui/issues"
+  },
+  "homepage": "https://github.com/ShieldShield/ripme-webgui#readme"
+}
