@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ShieldShield/ripme-webgui/issues"
   },
-  "homepage": "https://github.com/ShieldShield/ripme-webgui#readme"
+  "homepage": "https://github.com/ShieldShield/ripme-webgui#readme",
+  "dependencies": {
+    "urlscan-api": "0.0.4"
+  }
 }
