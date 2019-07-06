@@ -1,4 +1,4 @@
-# Vuejs Todo App
+# Ripme Gui (Vue frontend)
 
 ## Project setup
 ```

@@ -1,5 +1,5 @@
 module.exports = this.Command = class Command {
-    prefix="";
+    prefix = "";
     options = [];
 
     constructor(prefix) {
@@ -9,9 +9,9 @@ module.exports = this.Command = class Command {
     }
 
     addOption(argument, content) {
-        this.options.push(buildArgString(argument,content));
+        this.options.push(buildArgString(argument, content));
     }
-    
+
     removeOption(argument, content) {
         const arg = buildArgString(argument, content);
         console.log("removing Argument...");
@@ -37,6 +37,7 @@ module.exports = this.Command = class Command {
     }
 
     build(URL) {
+        console.log( `build command commandbuilder: ${this.prefix} -u ${URL} ${this.options.join(" ")}`)
         return `${this.prefix} -u ${URL} ${this.options.join(" ")}`
     }
 
@@ -53,14 +54,18 @@ module.exports = this.Command = class Command {
     }
 
     setPrefix(prefix) {
-        this.prefix=prefix;
+        this.prefix = prefix;
     }
 
     resetOptions() {
-        this.options=[];
+        this.options = [];
     }
 }
 
 function buildArgString(argument, content) {
-    return `-${argument} ${content}`;
+    if (content !== undefined) {
+        return `-${argument} ${content}`;
+    } else {
+        return `-${argument}`;
+    }
 }

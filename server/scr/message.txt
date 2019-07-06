@@ -1,1 +1,2 @@
 #!/bin/bash
+java -jar ./ripme.jar -u https://meyerweb.com/eric/tools/dencoder/ 

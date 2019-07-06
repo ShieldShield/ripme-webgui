@@ -85,7 +85,9 @@ module.exports = this.Script = class Script {
                 }
             }
             if (!exists) {
-                this.appendToFile(this.commandBuilder.build());
+                console.log("writing url...");
+                this.commandBuilder.printArgs();
+                this.appendToFile(this.commandBuilder.build(url));
             }
         } else {
             console.log("isn't a url");
