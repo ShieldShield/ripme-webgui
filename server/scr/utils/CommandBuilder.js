@@ -36,8 +36,8 @@ module.exports = this.Command = class Command {
         return entf;
     }
 
-    build() {
-        return `${this.prefix} ${this.options.join(" ")}`
+    build(URL) {
+        return `${this.prefix} -u ${URL} ${this.options.join(" ")}`
     }
 
     cleanUp() {
