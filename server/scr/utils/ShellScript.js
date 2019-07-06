@@ -1,6 +1,7 @@
 const fs = require('fs');
 const CommandBuilder=require('./CommandBuilder');
 let executiveFileName = "message.txt";
+const shebang = "#!/bin/bash";
 
 
 module.exports = this.Script = class Script {
@@ -32,6 +33,7 @@ module.exports = this.Script = class Script {
         for (let i = 0; i < this.contArr.length; i++) {
             console.log(`contArr: ${this.contArr[i]}`);
         }
+        return this.contArr;
     }
 
     //Zeile hinten einfügen bei der Datei
@@ -110,7 +112,6 @@ module.exports = this.Script = class Script {
     addSheBang() {
         //initialisierung
         this.readFile();
-        const shebang = "#!/bin/bash";
         //Überprüfen ob es schon shebang gibt
         if (!this.contArr[0].includes(shebang)) {
             //Schreiben
@@ -123,6 +124,10 @@ module.exports = this.Script = class Script {
                 if (err) throw err;
             });
         }
+    }
+
+    getSheBang() {
+        return shebang;
     }
 }
 
