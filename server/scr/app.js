@@ -9,10 +9,14 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/register", (req, res) => {
+
+
+app.get("/api/:id", (req, res) => {
+    let url=decodeURIComponent(req.params.id);
     res.send({
-        message: `Hello ${req.body.email}! Your user was registered! Have fun!`
+        message: `Hello ${url}! Your user was registered! Have fun!`
     });
 });
+
 
 app.listen(process.env.PORT || 8081);

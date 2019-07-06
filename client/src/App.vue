@@ -5,7 +5,7 @@
 		</h1>
 
 		<div class="nav text-center mt-3">
-			<router-link to="/">Todos</router-link>
+			<router-link to="/">Automatic</router-link>
 			<router-link to="/settings">Settings</router-link>
 			<router-link to="/about">About</router-link>
 		</div>

@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "node ./node_modules/nodemon/bin/nodemon.js scr/app.js --exec \"npm run node\""
+    "start": "node ./node_modules/nodemon/bin/nodemon.js scr/app.js --exec \"node\""
   },
   "keywords": [],
   "author": "",
