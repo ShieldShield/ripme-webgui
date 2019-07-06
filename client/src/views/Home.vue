@@ -36,7 +36,7 @@
 					text: taskName,
 					isDone: false
 				}
-                for(let i=0;i<itemList.length();i++);
+
 				this.itemList.push(task)
 			},
 
