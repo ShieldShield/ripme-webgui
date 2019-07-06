@@ -1,5 +1,5 @@
 {
-  "name": "vuejs-todo-app",
+  "name": "ripme-webgui",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^2.5.17",
+    "vue-js-toggle-button": "^1.3.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

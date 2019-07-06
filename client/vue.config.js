@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: '/vuejs-todo/'
+  baseUrl: '/ripme-web/'
 }

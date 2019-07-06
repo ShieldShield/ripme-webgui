@@ -1,19 +1,18 @@
 <template>
   <div class="ani-slideInDown text-center">
-    <h2 class="fs-h2">Settings</h2>
-
-    <p>
-      <a
-        href="https://github.com/d2phap/vuejs-todo"
-        rel="noopener noreferer"
-      >https://github.com/d2phap/vuejs-todo</a>
-    </p>
-    <h2 class="fs-h2">ShieldShield</h2>
-    <p>
-      <a
-        href="https://github.com/ShieldShield/ripme-webgui"
-        rel="noopener noreferer"
-      >https://github.com/ShieldShield/ripme-webgui</a>
-    </p>
+    <form @submit="onPathChanged">
+      <h2>Download Directory</h2>
+      <br>
+      <input type="text" placeholder="Absolute Path" v-model="text" required />
+    </form>
+    <br>
+    <toggle-button :value="true"
+               :labels="{checked: 'on', unchecked: 'off'}" @change="onChangeEventHandler"/>
   </div>
 </template>
+
+<<script>
+export default {
+  
+}
+</script>

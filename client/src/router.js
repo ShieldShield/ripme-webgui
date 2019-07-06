@@ -1,8 +1,10 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Home from "./views/Home.vue"
+import ToggleButton from "vue-js-toggle-button"
 
 Vue.use(Router)
+Vue.use(ToggleButton)
 
 export default new Router({
 	routes: [
