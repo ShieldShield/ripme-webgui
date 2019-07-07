@@ -13,7 +13,7 @@
 		<div class="main-content mt-5">
 			<router-view />
 		</div>
-		
+		<vue-snotify></vue-snotify>
 	</div>
 </template>
 
