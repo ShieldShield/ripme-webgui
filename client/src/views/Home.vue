@@ -41,15 +41,6 @@ export default {
     /**
      * Event: add new task
      */
-
-    displayNotification() {
-      this.$snotify.success({
-        body: "Success Body",
-        title: "Success Title",
-        config: {}
-      });
-    },
-
     onAddNewTask(taskName) {
       if (!is_url(taskName)) {
         this.$snotify.error(taskName + " isn't a valid URL");
@@ -129,6 +120,14 @@ export default {
         this.updateItemList();
       },
       deep: true
+    },
+    urlList: {
+      handler(value) {
+        this.itemList=[];
+        for(let i=0;i<urlList.length;i++) {
+          onAddNewTask(urlList[i]);
+        }
+      }
     }
   }
 };
