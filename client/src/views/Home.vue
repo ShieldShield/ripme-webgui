@@ -1,7 +1,7 @@
 <template>
   <div class="ani-slideInDown row justify-content-center">
     <div class="col-lg-6">
-      <ToDoInput @eventAddNewTask="onAddNewTask"/>
+      <ToDoInput @eventAddNewTask="onAddNewTask" />
 
       <ul class="list mt-3">
         <ListItem
@@ -23,9 +23,9 @@
 import ToDoInput from "@/components/ToDoInput.vue";
 import ListItem from "@/components/ListItem.vue";
 import axios from "axios";
-import snotify from 'vue-snotify';
+import snotify from "vue-snotify";
 
-const baseURL="http://localhost:8081";
+const baseURL = "http://localhost:8081";
 export default {
   name: "home",
   components: {
@@ -44,15 +44,15 @@ export default {
 
     displayNotification() {
       this.$snotify.success({
-        body: 'Success Body',
-        title: 'Success Title',
+        body: "Success Body",
+        title: "Success Title",
         config: {}
       });
     },
 
     onAddNewTask(taskName) {
-      if(!is_url(taskName)) {
-        this.$snotify.error(taskName+" isn't a valid URL");
+      if (!is_url(taskName)) {
+        this.$snotify.error(taskName + " isn't a valid URL");
         return;
       }
       const task = {
@@ -62,12 +62,11 @@ export default {
       };
       if (!contains(this.itemList, "text", taskName)) {
         this.itemList.push(task);
-        this.$snotify.success(taskName+" will now be synced")
-        let url=encodeURIComponent(taskName);
-        console.log(url)
-        axios.get(`${baseURL}/api/shell/add/${url}`)
+        this.$snotify.success(taskName + " will now be synced");
+        let url = encodeURIComponent(taskName);
+        axios.get(`${baseURL}/api/shell/add/${url}`);
       } else {
-        this.$snotify.info(taskName+" is already synced, will not be added");
+        this.$snotify.info(taskName + " is already synced, will not be added");
       }
     },
 
@@ -89,15 +88,16 @@ export default {
      * Event: on task deleted
      */
     onTaskDelete(id) {
-      console.log("id: "+id);
+      console.log("id: " + id);
 
       let index = this.itemList.findIndex(i => i.id == id);
       let url = this.itemList[index].text;
       if (index > -1) {
         console.log(this.itemList.splice(index, 1));
-      }
-      this.$snotify.success(`${url} removed`)
+      } this.$snotify.success(`${url} removed`);
+      let urlEnc = encodeURIComponent(url);
       console.log(this.itemList);
+      axios.get(`${baseURL}/api/shell/rem/${urlEnc}`);
     },
 
     /**
@@ -141,16 +141,13 @@ function contains(arr, key, val) {
 }
 
 function is_url(str) {
-    let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-    if (regexp.test(str)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+  let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+  if (regexp.test(str)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-function apiCall(mode, url) {
-  
-}
+function apiCall(mode, url) {}
 </script>

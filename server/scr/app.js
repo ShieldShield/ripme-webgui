@@ -54,6 +54,7 @@ app.get("/api/shell/:mode/:url", (req, res) => {
         shScript.addCommand(url);
     } else if (mode === "rem") {
         shScript.removeCommand(url);
+        console.log("removing...")
     } res.send({
         message: `good`
     });

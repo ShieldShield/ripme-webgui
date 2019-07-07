@@ -1,3 +1,4 @@
 #!/bin/bash
 java -jar ./ripme.jar -u https://meyerweb.com/eric/tools/dencoder/ 
-java -jar ./ripme.jar -u https://github.com/artemsky/vue-snotify/tree/master/example/src/App 
+java -jar ./ripme.jar -u https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html 
+java -jar ./ripme.jar -u https://medium.com/javascript-in-plain-english/implement-movie-app-with-vue-vuetify-axios-open-movie-database-api-d12290318cf9 
