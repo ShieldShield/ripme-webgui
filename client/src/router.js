@@ -27,6 +27,12 @@ export default new Router({
 			name: "settings",
 			component: () =>
 				import("./views/Settings.vue")
+		},
+		{
+			path: "/single",
+			name: "single",
+			component: () =>
+				import("./views/Single.vue")
 		}
 	]
 })

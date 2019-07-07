@@ -6,6 +6,7 @@
 
 		<div class="nav text-center mt-3">
 			<router-link to="/">Automatic</router-link>
+			<router-link to="/single">Once</router-link>
 			<router-link to="/settings">Settings</router-link>
 			<router-link to="/about">About</router-link>
 		</div>
