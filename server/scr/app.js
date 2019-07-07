@@ -56,6 +56,7 @@ app.get("/api/shell/:mode/:url", (req, res) => {
         shScript.removeCommand(url);
         console.log("removing...")
     } res.send({
+        message: `good`
     });
 });
 
@@ -78,6 +79,13 @@ app.get("/api/shell/read", (req, res) => {
     res.send(response);
 });
 
+app.get("/api/exec/:url", (req, res) => {
+    //TODO: implement API
+    let url=req.params.url;
+    res.send({
+        message: `good`
+    });
+});
 
 
 //test
@@ -87,5 +95,8 @@ app.get("/api/:id", (req, res) => {
     });
 });
 
+const execu=require("./utils/Executer");
+const ex=new execu(0,0,0,__dirname+"/script"+"/script.bat");
+ex.execute();
 
 app.listen(process.env.PORT || 8081);

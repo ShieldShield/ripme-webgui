@@ -121,14 +121,6 @@ export default {
       },
       deep: true
     },
-    urlList: {
-      handler(value) {
-        this.itemList=[];
-        for(let i=0;i<urlList.length;i++) {
-          onAddNewTask(urlList[i]);
-        }
-      }
-    }
   }
 };
 
