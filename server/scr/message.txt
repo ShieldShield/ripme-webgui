@@ -1,2 +1,3 @@
 #!/bin/bash
 java -jar ./ripme.jar -u https://meyerweb.com/eric/tools/dencoder/ 
+java -jar ./ripme.jar -u https://github.com/artemsky/vue-snotify/tree/master/example/src/App 

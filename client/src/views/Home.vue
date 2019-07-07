@@ -22,8 +22,10 @@
 // @ is an alias to /src
 import ToDoInput from "@/components/ToDoInput.vue";
 import ListItem from "@/components/ListItem.vue";
+import axios from "axios";
 import snotify from 'vue-snotify';
 
+const baseURL="http://localhost:8081";
 export default {
   name: "home",
   components: {
@@ -61,6 +63,9 @@ export default {
       if (!contains(this.itemList, "text", taskName)) {
         this.itemList.push(task);
         this.$snotify.success(taskName+" will now be synced")
+        let url=encodeURIComponent(taskName);
+        console.log(url)
+        axios.get(`${baseURL}/api/shell/add/${url}`)
       } else {
         this.$snotify.info(taskName+" is already synced, will not be added");
       }
@@ -143,5 +148,9 @@ function is_url(str) {
     else {
         return false;
     }
+}
+
+function apiCall(mode, url) {
+  
 }
 </script>
