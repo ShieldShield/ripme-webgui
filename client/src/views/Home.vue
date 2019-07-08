@@ -140,5 +140,4 @@ function is_url(str) {
   }
 }
 
-function apiCall(mode, url) {}
 </script>

@@ -1,43 +1,43 @@
 const { exec } = require('child_process');
-var schedule= require('node-schedule');
+var schedule = require('node-schedule');
 var scheduled;
 
 module.exports = this.executer = class executer {
     rule = new schedule.RecurrenceRule();
-    weekDay=0;
-    hour=0;
-    minute=0;
+    weekDay = 0;
+    hour = 0;
+    minute = 0;
     executiveFileName;
 
-    constructor(weekDay,hour,minute, executiveFileName) {
-        this.weekDay=weekDay;
-        this.hour=hour;
-        this.minute=minute;
-        this.executiveFileName=executiveFileName;
+    constructor(weekDay, hour, minute, executiveFileName) {
+        this.weekDay = weekDay;
+        this.hour = hour;
+        this.minute = minute;
+        this.executiveFileName = executiveFileName;
     }
 
     //Getter und Setter
-    setWeekly(weekDay,hour,minute) {
-        this.weekDay=weekDay;
-        this.hour=hour;
-        this.minute=minute;
+    setWeekly(weekDay, hour, minute) {
+        this.weekDay = weekDay;
+        this.hour = hour;
+        this.minute = minute;
     }
 
-    setDaily(hour,minute) {
-        this.hour=hour;
-        this.minute=minute;
+    setDaily(hour, minute) {
+        this.hour = hour;
+        this.minute = minute;
     }
 
     setWeek(weekDay) {
-        this.weekDay=weekDay;
+        this.weekDay = weekDay;
     }
-    
+
     setHour(hour) {
-        this.hour=hour;
+        this.hour = hour;
     }
 
     setMinute(minute) {
-        this.minute=minute;
+        this.minute = minute;
     }
 
     getAll = () => {
@@ -48,30 +48,32 @@ module.exports = this.executer = class executer {
         }
     }
     enforceRuleDaily() {
-        this.rule=[];
+        this.rule = [];
         this.failsafeCheck();
     }
 
     enforceRule = () => {
-        this.rule=[];
+        this.rule = [];
         this.failsafeCheck();
-        this.rule.dayOfWeek=this.weekDay;
-        this.rule.hour=this.hour;
-        this.rule.minute=this.minute;
-        scheduled=schedule.scheduleJob(this.rule, function() {
+        this.rule.dayOfWeek = this.weekDay;
+        this.rule.hour = this.hour;
+        this.rule.minute = this.minute;
+        scheduled = schedule.scheduleJob(this.rule, function () {
             that.execute();
         })
-        
+
     }
 
     execute = () => {
         console.log(`executing... ${this.executiveFileName}`)
-        exec(this.executiveFileName);
+        let out = exec(this.executiveFileName, (err, stdout, stderr) => console.log(stdout));
+        out.stdout.pipe(process.stdout);
     }
 
     executeOnce = (command) => {
         console.log(`about to execute command: ${command}`);
-        exec(command);
+        let out = exec(command);
+        out.stdout.pipe(process.stdout);
     }
 
     cancel() {
@@ -80,41 +82,41 @@ module.exports = this.executer = class executer {
 
     failsafeCheck() {
         let reset = false;
-        if(compliantTimeSev(this.weekDay)) {
-            reset=true;
-        } else if(compliantTimeTwo(this.hour)){
-            reset=true;
-        } else if(compliantTimeSix(this.minute)) {
+        if (compliantTimeSev(this.weekDay)) {
+            reset = true;
+        } else if (compliantTimeTwo(this.hour)) {
+            reset = true;
+        } else if (compliantTimeSix(this.minute)) {
             reset = true;
         }
-        if(reset) {
+        if (reset) {
             console.log("reseting time (weekly) to prevent Servercrash");
-            this.weekDay=0;
-            this.hour=0;
-            this.minute=0;
+            this.weekDay = 0;
+            this.hour = 0;
+            this.minute = 0;
             this.updateRule();
         }
     }
 
     failsafeCheckDaily() {
         let reset = false;
-        if(compliantTimeTwo(this.hour)){
-            reset=true;
-        } else if(compliantTimeSix(this.minute)) {
+        if (compliantTimeTwo(this.hour)) {
+            reset = true;
+        } else if (compliantTimeSix(this.minute)) {
             reset = true;
         }
-        if(reset) {
+        if (reset) {
             console.log("reseting time (daily) to prevent Servercrash");
-            this.hour=0;
-            this.minute=0;
+            this.hour = 0;
+            this.minute = 0;
             this.updateRule();
         }
     }
 
     test = (seconds) => {
         console.log("running test...")
-        let newRule=new schedule.RecurrenceRule();
-        scheduled=schedule.scheduleJob({second:1}, () => {
+        let newRule = new schedule.RecurrenceRule();
+        scheduled = schedule.scheduleJob({ second: 1 }, () => {
             console.log("execute");
             this.execute();
         })
@@ -122,7 +124,7 @@ module.exports = this.executer = class executer {
 }
 
 function compliantTimeSix(cont) {
-    if(cont>=60) {
+    if (cont >= 60) {
         return false;
     } else {
         return true;
@@ -130,7 +132,7 @@ function compliantTimeSix(cont) {
 }
 
 function compliantTimeTwo(cont) {
-    if(cont>=24) {
+    if (cont >= 24) {
         return false;
     } else {
         return true;
@@ -138,7 +140,7 @@ function compliantTimeTwo(cont) {
 }
 
 function compliantTimeSev(cont) {
-    if(cont>=7)  {
+    if (cont >= 7) {
         return false;
     } else {
         return true;

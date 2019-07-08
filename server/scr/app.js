@@ -11,7 +11,7 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
-const prefix = "java -jar ./ripme.jar";
+const prefix = `java -jar ${__dirname}/ripme.jar`;
 const comBuilder = new CommandBuilder(prefix);
 
 let filename;
@@ -124,7 +124,7 @@ app.get("/api/execute/:minute/:hour", (req, res) => {
 });
 
 app.get("/api/execute/:url", (req, res) => {
-    let url = res.params.url;
+    let url = req.params.url;
     let command = comBuilder.build(url);
     executer.executeOnce(command);
     res.send({
