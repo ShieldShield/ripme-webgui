@@ -40,6 +40,10 @@ module.exports = this.executer = class executer {
         this.minute = minute;
     }
 
+    setExecutiveFilename(filepath) {
+        this.executiveFileName=filepath;
+    }
+
     getAll = () => {
         return {
             weekDay: this.weekDay,

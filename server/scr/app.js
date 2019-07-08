@@ -29,7 +29,7 @@ if (isWin) {
 }
 
 const Executer = require("./utils/Executer");
-const executer = new Executer(0, 0, 0, __dirname + "/script" + "/script.bat");
+const executer = new Executer(0, 0, 0,filename);
 
 //CommandBuilder
 app.get("/api/command/:mode/:argument/:content", (req, res) => {
@@ -57,6 +57,7 @@ app.get("/api/command/:mode/:argument/", (req, res) => {
     } res.send({
         message: `good`
     });
+    comBuilder.printArgs();
 });
 
 //Shellscript
