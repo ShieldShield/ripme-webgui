@@ -47,6 +47,7 @@ module.exports = this.executer = class executer {
             minute: this.minute
         }
     }
+
     enforceRuleDaily() {
         this.rule = [];
         this.failsafeCheck();
