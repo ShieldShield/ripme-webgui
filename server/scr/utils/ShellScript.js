@@ -71,6 +71,7 @@ module.exports = this.Script = class Script {
 
     //Filtert leere Einträge in der Datei
     cleanUpFile() {
+        console.log("cleaning file...")
         this.contArr = this.contArr.filter(Boolean);
     }
 
@@ -116,8 +117,25 @@ module.exports = this.Script = class Script {
         if (!this.contArr[0].includes(shebang)) {
             //Schreiben
             const data = fs.readFileSync(executiveFileName);
-            const fd = fs.openSync(executiveFileName, 'w+');
+            const fd = fs.openSync(executiveFileName, 'w');
             const insert = shebang + "\n";
+            fs.writeSync(fd, insert, 0, insert.length, 0);
+            fs.writeSync(fd, data, 0, data.length, insert.length);
+            fs.close(fd, (err) => {
+                if (err) throw err;
+            });
+        }
+    }
+
+    addSheBangWin() {
+        //initialisierung
+        this.readFile();
+        //Überprüfen ob es schon shebang gibt
+        if (!this.contArr[0].includes(`REM ${shebang}`)) {
+            //Schreiben
+            const data = fs.readFileSync(executiveFileName);
+            const fd = fs.openSync(executiveFileName, 'w');
+            const insert = "REM "+shebang + "\n";
             fs.writeSync(fd, insert, 0, insert.length, 0);
             fs.writeSync(fd, data, 0, data.length, insert.length);
             fs.close(fd, (err) => {
@@ -158,5 +176,9 @@ function is_url(str) {
     else {
         return false;
     }
+}
+
+function is_undefined(arg) {
+    return !arg==="undefined";
 }
 

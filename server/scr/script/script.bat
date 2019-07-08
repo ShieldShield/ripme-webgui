@@ -1,1 +1,1 @@
-start "" http://www.stackoverflow.com
+REM #!/bin/bash

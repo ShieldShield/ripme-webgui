@@ -14,8 +14,22 @@ app.use(cors());
 const prefix = "java -jar ./ripme.jar";
 const comBuilder = new CommandBuilder(prefix);
 
-const filename = __dirname + "/message.txt";
-const shScript = new ShellScript(filename, comBuilder);
+let filename;
+let isWin = process.platform === "win32";
+console.log("isWin=" + isWin);
+let shScript;
+if (isWin) {
+    filename = __dirname + "/script/script.bat";
+    shScript = new ShellScript(filename, comBuilder);
+    shScript.addSheBangWin();
+} else {
+    filename = __dirname + "/script/script.sh";
+    shScript = new ShellScript(filename, comBuilder);
+    shScript.addSheBang();
+}
+
+const Executer = require("./utils/Executer");
+const executer = new Executer(0, 0, 0, __dirname + "/script" + "/script.bat");
 
 //CommandBuilder
 app.get("/api/command/:mode/:argument/:content", (req, res) => {
@@ -81,11 +95,42 @@ app.get("/api/shell/read", (req, res) => {
 
 app.get("/api/exec/:url", (req, res) => {
     //TODO: implement API
-    let url=req.params.url;
+    let url = req.params.url;
     res.send({
         message: `good`
     });
 });
+
+//Execute
+app.get("/api/execute/:minute/:hour/:weekday", (req, res) => {
+    let minute = req.params.minute;
+    let hour = req.params.hour;
+    let weekday = req.params.weekday;
+    executer.setWeekly(weekday, hour, minute);
+    executer.enforceRule();
+    res.send({
+        message: `good`
+    });
+});
+
+app.get("/api/execute/:minute/:hour", (req, res) => {
+    let minute = req.params.minute;
+    let hour = req.params.hour;
+    executer.setDaily(hour, minute);
+    executer.enforceRuleDaily();
+    res.send({
+        message: `good`
+    });
+});
+
+app.get("/api/execute/:url", (req, res) => {
+    let url = res.params.url;
+    let command = comBuilder.build(url);
+    executer.executeOnce(command);
+    res.send({
+        message: `good`
+    });
+})
 
 
 //test
@@ -95,8 +140,5 @@ app.get("/api/:id", (req, res) => {
     });
 });
 
-const execu=require("./utils/Executer");
-const ex=new execu(0,0,0,__dirname+"/script"+"/script.bat");
-ex.execute();
 
 app.listen(process.env.PORT || 8081);

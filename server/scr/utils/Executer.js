@@ -17,8 +17,13 @@ module.exports = this.executer = class executer {
     }
 
     //Getter und Setter
-    setAll(weekDay,hour,minute) {
+    setWeekly(weekDay,hour,minute) {
         this.weekDay=weekDay;
+        this.hour=hour;
+        this.minute=minute;
+    }
+
+    setDaily(hour,minute) {
         this.hour=hour;
         this.minute=minute;
     }
@@ -35,28 +40,38 @@ module.exports = this.executer = class executer {
         this.minute=minute;
     }
 
-    getAll() {
+    getAll = () => {
         return {
             weekDay: this.weekDay,
             hour: this.hour,
             minute: this.minute
         }
     }
+    enforceRuleDaily() {
+        this.rule=[];
+        this.failsafeCheck();
+    }
 
-    updateRule() {
+    enforceRule = () => {
+        this.rule=[];
         this.failsafeCheck();
         this.rule.dayOfWeek=this.weekDay;
         this.rule.hour=this.hour;
         this.rule.minute=this.minute;
         scheduled=schedule.scheduleJob(this.rule, function() {
-            this.execute();
+            that.execute();
         })
         
     }
 
-    execute() {
+    execute = () => {
         console.log(`executing... ${this.executiveFileName}`)
         exec(this.executiveFileName);
+    }
+
+    executeOnce = (command) => {
+        console.log(`about to execute command: ${command}`);
+        exec(command);
     }
 
     cancel() {
@@ -73,12 +88,36 @@ module.exports = this.executer = class executer {
             reset = true;
         }
         if(reset) {
-            console.log("reseting time to prevent Servercrash");
+            console.log("reseting time (weekly) to prevent Servercrash");
             this.weekDay=0;
             this.hour=0;
             this.minute=0;
             this.updateRule();
         }
+    }
+
+    failsafeCheckDaily() {
+        let reset = false;
+        if(compliantTimeTwo(this.hour)){
+            reset=true;
+        } else if(compliantTimeSix(this.minute)) {
+            reset = true;
+        }
+        if(reset) {
+            console.log("reseting time (daily) to prevent Servercrash");
+            this.hour=0;
+            this.minute=0;
+            this.updateRule();
+        }
+    }
+
+    test = (seconds) => {
+        console.log("running test...")
+        let newRule=new schedule.RecurrenceRule();
+        scheduled=schedule.scheduleJob({second:1}, () => {
+            console.log("execute");
+            this.execute();
+        })
     }
 }
 
