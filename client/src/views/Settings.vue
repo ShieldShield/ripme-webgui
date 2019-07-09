@@ -17,6 +17,7 @@
             <toggle-button
               v-model="saveorder"
               :value="true"
+              :sync="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeSaveOrder"
             />
@@ -57,6 +58,12 @@
         </tr>
       </table>
     </div>
+    <div class="schedule">
+      <select size="1" v-model="scheduleSelect">
+        <option>Weekly</option>
+        <option>Daily</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -66,15 +73,6 @@ import axios from "axios";
 import snotify from "vue-snotify";
 export default {
   methods: {
-    data() {
-      return {
-        path: '',
-        saveorder: '',
-        skip: '',
-        prop: '',
-        rerip: ''
-      }
-    },
     onPathChanged() {
       console.log("user input: "+this.path);
       let path=this.path;
@@ -95,6 +93,7 @@ export default {
 
     onChangeSaveOrder() {
       this.$snotify.info(`set saveorder to ${this.saveorder}`);
+      localStorage.setItem('saveorder',this.saveorder.value);
       if(this.saveorder) {
         axios.get(`${baseURL}/api/command/add/d`);
         axios.get(`${baseURL}/api/command/rem/D`);
@@ -136,6 +135,10 @@ export default {
         axios.get(`${baseURL}/api/command/rem/r`);
       }
     }
+  },
+  mounted() {
+    console.log("mounted app");
+    this.saveorder.value=localStorage.getItem('saveorder');
   },
 }
 </script>

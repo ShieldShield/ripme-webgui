@@ -114,4 +114,12 @@ app.get("/api/execute/:url", (req, res) => {
     });
 })
 
+app.get("/api/test/:test/:test2", (req, res) => {
+    let response=req.params.test;
+    let res2=req.params.test2;
+    res.send({
+        message: `hallo ${response} ${res2}`
+    });
+});
+
 app.listen(process.env.PORT || 8081);

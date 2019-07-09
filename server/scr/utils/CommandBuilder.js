@@ -9,7 +9,17 @@ module.exports = this.Command = class Command {
     }
 
     addOption(argument, content) {
+        let exists=false;
+        for(let i=0; i<this.options.length;i++) {
+            if(this.options[i]===buildArgString(argument, content)) {
+                exists = true 
+            }
+        }
+        if(!exists) {
         this.options.push(buildArgString(argument, content));
+        } else {
+            console.log("argument already exists");
+        }
     }
 
     removeOption(argument, content) {
