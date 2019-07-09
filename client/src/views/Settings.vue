@@ -1,17 +1,21 @@
 <template>
   <div class="ani-slideInDown text-center">
-    <form @submit="onPathChanged">
-      <h2>Download Directory</h2>
-      <br />
-      <input type="text" placeholder="Absolute Path" v-model="text" required />
-    </form>
+    <h2>Download Directory</h2>
+    <br />
+    <input
+      type="text"
+      placeholder="Absolute Path"
+      v-model="path"
+      v-on:keyup.enter="onPathChanged()"
+    />
     <br />
     <div class="switches">
       <table style="text-align:left; margin-left: auto; margin-right: auto;">
         <tr>
           <td>Keep saveorder</td>
           <td>
-            <toggle-button v-model="saveorder"
+            <toggle-button
+              v-model="saveorder"
               :value="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeSaveOrder"
@@ -21,7 +25,8 @@
         <tr>
           <td>Skip 404 errors</td>
           <td>
-            <toggle-button v-model="skip"
+            <toggle-button
+              v-model="skip"
               :value="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeSkip"
@@ -31,7 +36,8 @@
         <tr>
           <td>create prop file</td>
           <td>
-            <toggle-button v-model="prop"
+            <toggle-button
+              v-model="prop"
               :value="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeProp"
@@ -41,7 +47,8 @@
         <tr>
           <td>Rerip</td>
           <td>
-            <toggle-button v-model="rerip"
+            <toggle-button
+              v-model="rerip"
               :value="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeRerip"
@@ -59,6 +66,33 @@ import axios from "axios";
 import snotify from "vue-snotify";
 export default {
   methods: {
+    data() {
+      return {
+        path: '',
+        saveorder: '',
+        skip: '',
+        prop: '',
+        rerip: ''
+      }
+    },
+    onPathChanged() {
+      console.log("user input: "+this.path);
+      let path=this.path;
+      let regex = `(\\\\?([^\\/]*[\\/])*)([^\\/]+)$`;
+      if(path.match(regex)) {
+        this.$snotify.info("Path Changed");
+        if(path.length<=6) {
+          this.$snotify.warning("Something seems off, please doublecheck", {
+            timeout: 6000
+          });
+        }
+        console.log("test: "+encodeURIComponent(path))
+        axios.get(`${baseURL}/api/command/add/l/${encodeURIComponent(path)}`);
+      } else {
+        this.$snotify.error("Isn't a valid path");
+      }
+    },
+
     onChangeSaveOrder() {
       this.$snotify.info(`set saveorder to ${this.saveorder}`);
       if(this.saveorder) {
@@ -83,9 +117,9 @@ export default {
     onChangeProp() {
       this.$snotify.info(`set prop file to ${this.prop}`);
       if(this.prop) {
-        axios.get(`${baseURL}/api/command/add/n`);
-      } else {
         axios.get(`${baseURL}/api/command/rem/n`);
+      } else {
+        axios.get(`${baseURL}/api/command/add/n`);
         this.$snotify.warning(`This is only usefull if you plan to delete the data later otherwise it could lead to potential overuse of bandwith and datacorruption`, {
           timeout:10000
         });
