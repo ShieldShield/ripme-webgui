@@ -22,6 +22,10 @@ module.exports = this.Command = class Command {
         }
     }
 
+    clearOptions() {
+        this.options=[];
+    }
+
     removeOption(argument, content) {
         const arg = buildArgString(argument, content);
         console.log("removing Argument...");

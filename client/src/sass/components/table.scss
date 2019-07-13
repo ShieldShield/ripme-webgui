@@ -1,17 +1,19 @@
 table {
 
+    width: 100%;
     tr {
-        border-top: $gap/15 solid lighten($color-bg, 10);
+        // border-top: $gap/15 solid lighten($color-bg, 10);
 
         &> th,
         &> td {
+            border: none;
             padding: $gap/2;
-            border-left: $gap/15 solid lighten($color-bg, 10);
+            // border-left: $gap/15 solid lighten($color-bg, 10);
             transition: all ease 200ms;
 
-            &:last-child {
-                border-right: $gap/15 solid lighten($color-bg, 10);
-            }
+            // &:last-child {
+            //     border-right: $gap/15 solid lighten($color-bg, 10);
+            // }
         }
 
         &> th {

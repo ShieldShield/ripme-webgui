@@ -15,8 +15,7 @@
           <td>Keep saveorder</td>
           <td>
             <toggle-button
-              v-model="saveorder"
-              :value="true"
+              :value="this.saveorder"
               :sync="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeSaveOrder"
@@ -27,8 +26,8 @@
           <td>Skip 404 errors</td>
           <td>
             <toggle-button
-              v-model="skip"
-              :value="true"
+              :value="this.skip"
+              :sync="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeSkip"
             />
@@ -38,8 +37,8 @@
           <td>create prop file</td>
           <td>
             <toggle-button
-              v-model="prop"
-              :value="true"
+              :value="this.prop"
+              :sync="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeProp"
             />
@@ -49,8 +48,8 @@
           <td>Rerip</td>
           <td>
             <toggle-button
-              v-model="rerip"
-              :value="true"
+              :value="this.rerip"
+              :sync="true"
               :labels="{checked: 'on', unchecked: 'off'}"
               @change="onChangeRerip"
             />
@@ -72,6 +71,15 @@ const baseURL = "http://localhost:8081";
 import axios from "axios";
 import snotify from "vue-snotify";
 export default {
+  data() {
+    return {
+      //Boolean types
+      saveorder: JSON.parse(localStorage.getItem('saveorder')),
+      prop: JSON.parse(localStorage.getItem('prop')),
+      skip: JSON.parse(localStorage.getItem('skip')),
+      rerip: JSON.parse(localStorage.getItem('rerip'))
+    }
+  },
   methods: {
     onPathChanged() {
       console.log("user input: "+this.path);
@@ -92,8 +100,10 @@ export default {
     },
 
     onChangeSaveOrder() {
+      this.saveorder=!this.saveorder;
       this.$snotify.info(`set saveorder to ${this.saveorder}`);
-      localStorage.setItem('saveorder',this.saveorder.value);
+      console.log(`JSON ${this.saveorder}`)
+      localStorage.setItem('saveorder',JSON.stringify(this.saveorder));
       if(this.saveorder) {
         axios.get(`${baseURL}/api/command/add/d`);
         axios.get(`${baseURL}/api/command/rem/D`);
@@ -106,7 +116,9 @@ export default {
       }
     },
     onChangeSkip() {
+      this.skip=!this.skip;
       this.$snotify.info(`set Skip 404 to ${this.skip}`);
+      localStorage.setItem('skip',JSON.stringify(this.skip));
       if(this.skip) {
         axios.get(`${baseURL}/api/command/add/4`);
       } else {
@@ -114,7 +126,9 @@ export default {
       }
     },
     onChangeProp() {
+      this.prop=!this.prop
       this.$snotify.info(`set prop file to ${this.prop}`);
+      localStorage.setItem('prop',JSON.stringify(this.prop));
       if(this.prop) {
         axios.get(`${baseURL}/api/command/rem/n`);
       } else {
@@ -125,7 +139,9 @@ export default {
       }
     },
     onChangeRerip() {
+      ths.rerip=!this.rerip
       this.$snotify.info(`set rerip to ${this.rerip}`);
+      localStorage.setItem('rerip',JSON.stringify(this.rerip));
       if(this.rerip) {
         axios.get(`${baseURL}/api/command/add/r`);
         this.$snotify.warning(`This will overwrite existing copies of file, this could lead to data corruption`, {
@@ -134,11 +150,15 @@ export default {
       } else {
         axios.get(`${baseURL}/api/command/rem/r`);
       }
+    },
+    setSettings() {
+      this.saveorder=JSON.parse(localStorage.getItem('saveorder'));
     }
   },
   mounted() {
     console.log("mounted app");
-    this.saveorder.value=localStorage.getItem('saveorder');
+    console.log(`mounted value ${JSON.parse(localStorage.getItem('saveorder'))}`)
+    setSettings();
   },
 }
 </script>

@@ -114,12 +114,35 @@ app.get("/api/execute/:url", (req, res) => {
     });
 })
 
-app.get("/api/test/:test/:test2", (req, res) => {
-    let response=req.params.test;
-    let res2=req.params.test2;
+app.get("/api/test/", (req, res) => {
+    let response=false;
+    response=JSON.stringify(response);
     res.send({
-        message: `hallo ${response} ${res2}`
+        message: `${response}`
     });
 });
+
+//testRead
+var settings = {
+    ordner: "test",
+    saveorder: false,
+    skip: false,
+    prop: false,
+    rerip: false,
+    act: "weekly",
+    hour: 5,
+    minute: 4
+}
+
+app.get("/api/settings/read", (req, res) => {
+    res.send(settings);
+}) 
+
+app.get("/api/settings/write/:json", (req, res) => {
+    this.settings=req.params.json;
+    res.send(settings);
+}) 
+
+
 
 app.listen(process.env.PORT || 8081);
