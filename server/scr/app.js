@@ -134,6 +134,7 @@ var settings = {
     minute: 4
 }
 
+//Not used
 app.get("/api/settings/read", (req, res) => {
     res.send(settings);
 }) 

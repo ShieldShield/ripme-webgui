@@ -55,13 +55,17 @@
             />
           </td>
         </tr>
+        <tr>
+          <td>Push settings to server (fix desync)</td>
+            <td><div class="btn" v-on:click="pushSettings">push</div></td>
+        </tr>
+        <tr>
+          <td>
+            
+          <td>
+        </tr>
+
       </table>
-    </div>
-    <div class="schedule">
-      <select size="1" v-model="scheduleSelect">
-        <option>Weekly</option>
-        <option>Daily</option>
-      </select>
     </div>
   </div>
 </template>
@@ -77,7 +81,38 @@ export default {
       saveorder: JSON.parse(localStorage.getItem('saveorder')),
       prop: JSON.parse(localStorage.getItem('prop')),
       skip: JSON.parse(localStorage.getItem('skip')),
-      rerip: JSON.parse(localStorage.getItem('rerip'))
+      rerip: JSON.parse(localStorage.getItem('rerip')),
+
+      //ToggleSwitch
+      weekDay: {
+        layout: {
+          color: 'black',
+          backgroundColor: 'lightgray',
+          selectedColor: 'white',
+          selectedBackgroundColor: 'green',
+          borderColor: 'black',
+          fontFamily: 'Arial',
+          fontWeight: 'normal',
+          fontWeightSelected: 'bold',
+          squareCorners: false,
+          noBorder: false
+        },
+        size: {
+          fontSize: 1,
+          height: 2,
+          padding: 0,
+          width: 10
+        },
+        items: {
+          delay: .4,
+          preSelected: 'unknown',
+          disabled: false,
+          labels: [
+            {name: 'Weekly', color: 'white', backgroundColor: 'red'}, 
+            {name: 'Daily', color: 'white', backgroundColor: 'green'}
+          ]
+        }
+      }
     }
   },
   methods: {
@@ -116,6 +151,7 @@ export default {
       }
     },
     onChangeSkip() {
+      console.log("rerip");
       this.skip=!this.skip;
       this.$snotify.info(`set Skip 404 to ${this.skip}`);
       localStorage.setItem('skip',JSON.stringify(this.skip));
@@ -139,7 +175,7 @@ export default {
       }
     },
     onChangeRerip() {
-      ths.rerip=!this.rerip
+      this.rerip=!this.rerip
       this.$snotify.info(`set rerip to ${this.rerip}`);
       localStorage.setItem('rerip',JSON.stringify(this.rerip));
       if(this.rerip) {
@@ -151,14 +187,35 @@ export default {
         axios.get(`${baseURL}/api/command/rem/r`);
       }
     },
-    setSettings() {
-      this.saveorder=JSON.parse(localStorage.getItem('saveorder'));
+    resetSettings() {
+      this.saveorder=true;
+      this.prop=true;
+      this.skip=true;
+      this.rerip=false;
+      this.$snotify.info(`Settings are now reset`);
+    },
+    pushSettings() {
+      this.$snotify.warning(`Because of changes, multiple messages will appear if push is pressed, please ignore them`, {
+        timeout:9000
+      });
+      this.$snotify.confirm(`this will push your settings to the Server, continue?`, {
+        timeout: 20000,
+        buttons: [
+          {text: "push", action: () => this.pushHelper()},
+          {text: "cancel"},
+          {text: "close"}
+        ]
+      });
+    },
+    pushHelper() {
+      for(let i=0;i<2;i++) {
+        this.onChangeRerip();
+        this.onChangeProp();
+        this.onChangeSkip();
+        this.onChangeSaveOrder();
+        this.$snotify.void;
+      }
     }
-  },
-  mounted() {
-    console.log("mounted app");
-    console.log(`mounted value ${JSON.parse(localStorage.getItem('saveorder'))}`)
-    setSettings();
-  },
+  }
 }
 </script>
