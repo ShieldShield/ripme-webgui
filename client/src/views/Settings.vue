@@ -11,6 +11,9 @@
     <br />
     <div class="switches">
       <table style="text-align:left; margin-left: auto; margin-right: auto;">
+         <tr>
+          <th><h3>General</h3></th>
+        </tr>
         <tr>
           <td>Keep saveorder</td>
           <td>
@@ -56,21 +59,35 @@
           </td>
         </tr>
         <tr>
-          <td>Push settings to server (fix desync)</td>
-            <td><div class="btn" v-on:click="pushSettings">push</div></td>
+          <th><h3>Automation</h3></th>
         </tr>
         <tr>
+          <td>Set interval mode (Daily/Weekly)</td>
           <td>
-            
-          <td>
+            <toggle-button
+              :value="this.weekly"
+              :sync="true"
+              :labels="{checked: 'Weekly', unchecked: 'Daily'}"
+              @change="onChangeWeekly"
+            />
+          </td>
+          <td></td>
         </tr>
-
+        <tr>
+          <th><h3>Other</h3></th>
+        </tr>
+        <tr>
+          <td>Push settings to server (fix desync)</td>
+          <td>
+            <div class="btn" v-on:click="pushSettings">push</div>
+          </td>
+        </tr>
       </table>
     </div>
   </div>
 </template>
 
-<<script>
+<script>
 const baseURL = "http://localhost:8081";
 import axios from "axios";
 import snotify from "vue-snotify";
@@ -78,56 +95,26 @@ export default {
   data() {
     return {
       //Boolean types
-      saveorder: JSON.parse(localStorage.getItem('saveorder')),
-      prop: JSON.parse(localStorage.getItem('prop')),
-      skip: JSON.parse(localStorage.getItem('skip')),
-      rerip: JSON.parse(localStorage.getItem('rerip')),
-
-      //ToggleSwitch
-      weekDay: {
-        layout: {
-          color: 'black',
-          backgroundColor: 'lightgray',
-          selectedColor: 'white',
-          selectedBackgroundColor: 'green',
-          borderColor: 'black',
-          fontFamily: 'Arial',
-          fontWeight: 'normal',
-          fontWeightSelected: 'bold',
-          squareCorners: false,
-          noBorder: false
-        },
-        size: {
-          fontSize: 1,
-          height: 2,
-          padding: 0,
-          width: 10
-        },
-        items: {
-          delay: .4,
-          preSelected: 'unknown',
-          disabled: false,
-          labels: [
-            {name: 'Weekly', color: 'white', backgroundColor: 'red'}, 
-            {name: 'Daily', color: 'white', backgroundColor: 'green'}
-          ]
-        }
-      }
-    }
+      saveorder: JSON.parse(localStorage.getItem("saveorder")),
+      prop: JSON.parse(localStorage.getItem("prop")),
+      skip: JSON.parse(localStorage.getItem("skip")),
+      rerip: JSON.parse(localStorage.getItem("rerip")),
+      weekly: JSON.parse(localStorage.getItem("weekly"))
+    };
   },
   methods: {
     onPathChanged() {
-      console.log("user input: "+this.path);
-      let path=this.path;
+      console.log("user input: " + this.path);
+      let path = this.path;
       let regex = `(\\\\?([^\\/]*[\\/])*)([^\\/]+)$`;
-      if(path.match(regex)) {
+      if (path.match(regex)) {
         this.$snotify.info("Path Changed");
-        if(path.length<=6) {
+        if (path.length <= 6) {
           this.$snotify.warning("Something seems off, please doublecheck", {
             timeout: 6000
           });
         }
-        console.log("test: "+encodeURIComponent(path))
+        console.log("test: " + encodeURIComponent(path));
         axios.get(`${baseURL}/api/command/add/l/${encodeURIComponent(path)}`);
       } else {
         this.$snotify.error("Isn't a valid path");
@@ -135,80 +122,114 @@ export default {
     },
 
     onChangeSaveOrder() {
-      this.saveorder=!this.saveorder;
+      this.saveorder = !this.saveorder;
       this.$snotify.info(`set saveorder to ${this.saveorder}`);
-      console.log(`JSON ${this.saveorder}`)
-      localStorage.setItem('saveorder',JSON.stringify(this.saveorder));
-      if(this.saveorder) {
+      console.log(`JSON ${this.saveorder}`);
+      localStorage.setItem("saveorder", JSON.stringify(this.saveorder));
+      if (this.saveorder) {
         axios.get(`${baseURL}/api/command/add/d`);
         axios.get(`${baseURL}/api/command/rem/D`);
       } else {
-        this.$snotify.warning(`This could result in unmanagable datastructures, use only if you know what you are doing`, {
-          timeout:8000
-        });
+        this.$snotify.warning(
+          `This could result in unmanagable datastructures, use only if you know what you are doing`,
+          {
+            timeout: 8000
+          }
+        );
         axios.get(`${baseURL}/api/command/rem/d`);
         axios.get(`${baseURL}/api/command/add/D`);
       }
     },
     onChangeSkip() {
       console.log("rerip");
-      this.skip=!this.skip;
+      this.skip = !this.skip;
       this.$snotify.info(`set Skip 404 to ${this.skip}`);
-      localStorage.setItem('skip',JSON.stringify(this.skip));
-      if(this.skip) {
+      localStorage.setItem("skip", JSON.stringify(this.skip));
+      if (this.skip) {
         axios.get(`${baseURL}/api/command/add/4`);
       } else {
         axios.get(`${baseURL}/api/command/rem/4`);
       }
     },
     onChangeProp() {
-      this.prop=!this.prop
+      this.prop = !this.prop;
       this.$snotify.info(`set prop file to ${this.prop}`);
-      localStorage.setItem('prop',JSON.stringify(this.prop));
-      if(this.prop) {
+      localStorage.setItem("prop", JSON.stringify(this.prop));
+      if (this.prop) {
         axios.get(`${baseURL}/api/command/rem/n`);
       } else {
         axios.get(`${baseURL}/api/command/add/n`);
-        this.$snotify.warning(`This is only usefull if you plan to delete the data later otherwise it could lead to potential overuse of bandwith and datacorruption`, {
-          timeout:10000
-        });
+        this.$snotify.warning(
+          `This is only usefull if you plan to delete the data later otherwise it could lead to potential overuse of bandwith and datacorruption`,
+          {
+            timeout: 10000
+          }
+        );
       }
     },
     onChangeRerip() {
-      this.rerip=!this.rerip
+      this.rerip = !this.rerip;
       this.$snotify.info(`set rerip to ${this.rerip}`);
-      localStorage.setItem('rerip',JSON.stringify(this.rerip));
-      if(this.rerip) {
+      localStorage.setItem("rerip", JSON.stringify(this.rerip));
+      if (this.rerip) {
         axios.get(`${baseURL}/api/command/add/r`);
-        this.$snotify.warning(`This will overwrite existing copies of file, this could lead to data corruption`, {
-          timeout:8000
-        });
+        this.$snotify.warning(
+          `This will overwrite existing copies of file, this could lead to data corruption`,
+          {
+            timeout: 8000
+          }
+        );
       } else {
         axios.get(`${baseURL}/api/command/rem/r`);
       }
     },
+    onChangeWeekly() {
+      this.weekly = !this.weekly;
+      let response;
+      if (this.weekly) {
+        response = "Weekly";
+      } else {
+        response = "Daily";
+      }
+      this.$snotify.info(`set update interval to ${response}`);
+    },
+
+    updateTimings() {
+      if (this.weekly === "Weekly") {
+        //TODO: change timings
+      } else {
+        //TODO: DAILY change timings
+      }
+    },
+
     resetSettings() {
-      this.saveorder=true;
-      this.prop=true;
-      this.skip=true;
-      this.rerip=false;
+      this.saveorder = true;
+      this.prop = true;
+      this.skip = true;
+      this.rerip = false;
       this.$snotify.info(`Settings are now reset`);
     },
     pushSettings() {
-      this.$snotify.warning(`Because of changes, multiple messages will appear if push is pressed, please ignore them`, {
-        timeout:9000
-      });
-      this.$snotify.confirm(`this will push your settings to the Server, continue?`, {
-        timeout: 20000,
-        buttons: [
-          {text: "push", action: () => this.pushHelper()},
-          {text: "cancel"},
-          {text: "close"}
-        ]
-      });
+      this.$snotify.warning(
+        `Because of changes, multiple messages will appear if push is pressed, please ignore them`,
+        {
+          timeout: 9000
+        }
+      );
+      this.$snotify.confirm(
+        `this will push your settings to the Server, continue?`,
+        {
+          timeout: 20000,
+          buttons: [
+            { text: "push", action: () => this.pushHelper() },
+            { text: "cancel" },
+            { text: "close" }
+          ]
+        }
+      );
     },
     pushHelper() {
-      for(let i=0;i<2;i++) {
+      for (let i = 0; i < 2; i++) {
         this.onChangeRerip();
         this.onChangeProp();
         this.onChangeSkip();
@@ -217,5 +238,5 @@ export default {
       }
     }
   }
-}
+};
 </script>
