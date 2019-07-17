@@ -11,8 +11,10 @@
     <br />
     <div class="switches">
       <table style="text-align:left; margin-left: auto; margin-right: auto;">
-         <tr>
-          <th><h3>General</h3></th>
+        <tr>
+          <th>
+            <h3>General</h3>
+          </th>
         </tr>
         <tr>
           <td>Keep saveorder</td>
@@ -59,7 +61,9 @@
           </td>
         </tr>
         <tr>
-          <th><h3>Automation</h3></th>
+          <th>
+            <h3>Automation</h3>
+          </th>
         </tr>
         <tr>
           <td>Set interval mode (Daily/Weekly)</td>
@@ -71,10 +75,70 @@
               @change="onChangeWeekly"
             />
           </td>
-          <td></td>
         </tr>
         <tr>
-          <th><h3>Other</h3></th>
+          <td>Weekday</td>
+          <td>
+            <form>
+              <fieldset>
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Monday"
+                /> Monday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Tuesday"
+                /> Tuesday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Wednesday"
+                /> Wednesday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Thursday"
+                /> Thursday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Friday"
+                /> Friday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Saturday"
+                /> Saturday
+                <input
+                  type="radio"
+                  v-model="weekday"
+                  v-on:click="onRadioClicked"
+                  name="Weekday"
+                  value="Sunday"
+                /> Sunday
+              </fieldset>
+            </form>
+            <strong style="color:green">Selected: {{weekday}}</strong>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <h3>Other</h3>
+          </th>
         </tr>
         <tr>
           <td>Push settings to server (fix desync)</td>
@@ -99,7 +163,8 @@ export default {
       prop: JSON.parse(localStorage.getItem("prop")),
       skip: JSON.parse(localStorage.getItem("skip")),
       rerip: JSON.parse(localStorage.getItem("rerip")),
-      weekly: JSON.parse(localStorage.getItem("weekly"))
+      weekly: JSON.parse(localStorage.getItem("weekly")),
+      weekday: []
     };
   },
   methods: {
@@ -185,6 +250,7 @@ export default {
     },
     onChangeWeekly() {
       this.weekly = !this.weekly;
+      localStorage.setItem("weekly", this.weekly);
       let response;
       if (this.weekly) {
         response = "Weekly";
@@ -192,6 +258,14 @@ export default {
         response = "Daily";
       }
       this.$snotify.info(`set update interval to ${response}`);
+    },
+
+    onRadioClicked() {
+      setTimeout(() => {
+        localStorage.setItem("Weekday", this.weekday);
+        this.$snotify.info(`Set Weekday to ${this.weekday}`);
+      }, 10);
+      
     },
 
     updateTimings() {
