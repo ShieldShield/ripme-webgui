@@ -76,7 +76,7 @@
             />
           </td>
         </tr>
-        <tr>
+        <tr v-if="weekly===true">
           <td>Weekday</td>
           <td>
             <form>
@@ -87,52 +87,52 @@
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Monday"
-                /> Monday
+                /> Monday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Tuesday"
-                /> Tuesday
+                /> Tuesday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Wednesday"
-                /> Wednesday
+                /> Wednesday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Thursday"
-                /> Thursday
+                /> Thursday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Friday"
-                /> Friday
+                /> Friday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Saturday"
-                /> Saturday
+                /> Saturday <br>
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Sunday"
-                /> Sunday
+                /> Sunday <br>
               </fieldset>
             </form>
-            <strong style="color:green">Selected: {{weekday}}</strong>
+            <strong style="color:green">{{weekday}}</strong>
           </td>
         </tr>
         <tr>
@@ -164,7 +164,7 @@ export default {
       skip: JSON.parse(localStorage.getItem("skip")),
       rerip: JSON.parse(localStorage.getItem("rerip")),
       weekly: JSON.parse(localStorage.getItem("weekly")),
-      weekday: []
+      weekday: JSON.parse(localStorage.getItem('weekday'))
     };
   },
   methods: {
@@ -262,7 +262,7 @@ export default {
 
     onRadioClicked() {
       setTimeout(() => {
-        localStorage.setItem("Weekday", this.weekday);
+        localStorage.setItem("weekday", JSON.stringify(this.weekday));
         this.$snotify.info(`Set Weekday to ${this.weekday}`);
       }, 10);
       
