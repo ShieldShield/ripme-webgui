@@ -144,7 +144,9 @@
         </tr>
         <tr>
           <td>Time</td>
-          <td><a-TimePicker format="HH:mm" /></td>
+          <td>
+            <a-TimePicker format="HH:mm" minuteStep="30" v-model="time" @change="onChangeTime" />
+          </td>
         </tr>
         <tr>
           <th>
@@ -166,7 +168,7 @@
 const baseURL = "http://localhost:8081";
 import axios from "axios";
 import snotify from "vue-snotify";
-import VueTimepicker from 'vue2-timepicker'
+import VueTimepicker from "vue2-timepicker";
 export default {
   data() {
     return {
@@ -176,10 +178,16 @@ export default {
       skip: JSON.parse(localStorage.getItem("skip")),
       rerip: JSON.parse(localStorage.getItem("rerip")),
       weekly: JSON.parse(localStorage.getItem("weekly")),
-      weekday: JSON.parse(localStorage.getItem("weekday"))
+      weekday: JSON.parse(localStorage.getItem("weekday")),
+      time: []
     };
   },
   methods: {
+    onChangeTime() {
+      this.$snotify.info(`Time for Automation: ${this.time}`);
+      console.log(`Time: ${this.time}`);
+    },
+
     onPathChanged() {
       console.log("user input: " + this.path);
       let path = this.path;
