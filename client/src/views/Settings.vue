@@ -87,53 +87,64 @@
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Monday"
-                /> Monday <br>
+                /> Monday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Tuesday"
-                /> Tuesday <br>
+                /> Tuesday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Wednesday"
-                /> Wednesday <br>
+                /> Wednesday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Thursday"
-                /> Thursday <br>
+                /> Thursday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Friday"
-                /> Friday <br>
+                /> Friday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Saturday"
-                /> Saturday <br>
+                /> Saturday
+                <br />
                 <input
                   type="radio"
                   v-model="weekday"
                   v-on:click="onRadioClicked"
                   name="Weekday"
                   value="Sunday"
-                /> Sunday <br>
+                /> Sunday
+                <br />
               </fieldset>
             </form>
             <strong style="color:green">{{weekday}}</strong>
           </td>
+        </tr>
+        <tr>
+          <td>Time</td>
+          <td><a-TimePicker format="HH:mm" /></td>
         </tr>
         <tr>
           <th>
@@ -155,6 +166,7 @@
 const baseURL = "http://localhost:8081";
 import axios from "axios";
 import snotify from "vue-snotify";
+import VueTimepicker from 'vue2-timepicker'
 export default {
   data() {
     return {
@@ -164,7 +176,7 @@ export default {
       skip: JSON.parse(localStorage.getItem("skip")),
       rerip: JSON.parse(localStorage.getItem("rerip")),
       weekly: JSON.parse(localStorage.getItem("weekly")),
-      weekday: JSON.parse(localStorage.getItem('weekday'))
+      weekday: JSON.parse(localStorage.getItem("weekday"))
     };
   },
   methods: {
@@ -265,7 +277,6 @@ export default {
         localStorage.setItem("weekday", JSON.stringify(this.weekday));
         this.$snotify.info(`Set Weekday to ${this.weekday}`);
       }, 10);
-      
     },
 
     updateTimings() {
